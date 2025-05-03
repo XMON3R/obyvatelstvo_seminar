@@ -10,6 +10,7 @@ Zápočtový projekt k předmětu: Seminář dobývání znalostí - NAIL121
 
 ## -> 1.5 otázka (TODO) 1.5. Ve kterých oblastech dochází k nejvyšší úmrtnosti?
 TODO - extrahovat jednotlivé kraje a nějak dát dohromady.
+---- druhá otázka script.
 
 
 ## 2.Je klesající trend porodnosti patrný ve všech krajích ČR, nebo existují regionální rozdíly?
@@ -19,10 +20,12 @@ TODO - najít a extrahovat datasety pro KAŽDÝ kraj.
 ## 3. Jak pandemie COVID-19 v letech 2020–2022 ovlivnila nejen porodnost a úmrtnost, ale i migraci – jak mezinárodní, tak v rámci jednotlivých krajů?
 ---- úmrtnost lze využít z první otázky scriptu
 TODO - pohyb, porodnost... extrahovat pro KRAJE.
+---- úmrtnost tedy mám, PORODNOT bude v otázce 2, migrace DODĚLAT
 
 
 ## 4. Platí obecně tvrzení, že muži v průměru umírají dříve než ženy?
 TODO - možná půjde odvodit z předchozích otázek? (respektive extrahovaných a transformovaných datasetů)
+--- gender skupina?
 
 
 ## JAK EXTRAHOVAT Z ČSÚ ?!
