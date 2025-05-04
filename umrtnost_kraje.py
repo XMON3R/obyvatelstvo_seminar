@@ -199,7 +199,7 @@ def nacti_data(soubor):
         print(f"Chyba při načítání souboru '{soubor}': {e}")
         return None
 
-# Načteme data ze všech CSV souborů
+# data ze všech CSV souborů
 all_data = []
 for soubor in os.listdir(output_directory):
     if soubor.endswith('.csv'):
@@ -207,17 +207,17 @@ for soubor in os.listdir(output_directory):
         if df_kraj is not None and df_kraj['Kraj'].iloc[0] != 'Česká republika':
             all_data.append(df_kraj)
 
-# Sloučíme všechna data do jednoho DataFrame
+# sloučení všech dat do jednoho DataFrame
 df_all = pd.concat(all_data)
 
-# Zjistíme všechny dostupné roky (sloupce, které nejsou index 'Měsíc' a 'Kraj')
+# všechny dostupné roky (sloupce, které nejsou index 'Měsíc' a 'Kraj')
 vsechny_roky = [col for col in df_all.columns if col not in ['Kraj']]
 
-# Připravíme prázdné DataFrames pro extrémy
+# příprava: prázdné DataFrames pro extrémy
 df_max_umrtnost = pd.DataFrame(columns=['Kraj', 'Měsíc'])
 df_min_umrtnost = pd.DataFrame(columns=['Kraj', 'Měsíc'])
 
-# Projdeme každý kraj a najdeme extrémní měsíce za všechny roky
+# každý kraj a extrémní měsíce za všechny roky
 for kraj in df_all['Kraj'].unique():
     df_kraj = df_all[df_all['Kraj'] == kraj]
     if vsechny_roky:
@@ -228,12 +228,12 @@ for kraj in df_all['Kraj'].unique():
             df_max_umrtnost = pd.concat([df_max_umrtnost, pd.DataFrame({'Kraj': [kraj], 'Měsíc': [max_mesic]})], ignore_index=True)
             df_min_umrtnost = pd.concat([df_min_umrtnost, pd.DataFrame({'Kraj': [kraj], 'Měsíc': [min_mesic]})], ignore_index=True)
 
-# Načteme GeoJSON z URL pomocí geopandas
+# GeoJSON z URL pomocí geopandas
 try:
     response = requests.get(geojson_url)
     response.raise_for_status()
     mapa_cr = geopandas.read_file(response.text)
-    mapa_cr = mapa_cr.rename(columns={'name': 'Kraj'}) # Rename for consistent merging
+    mapa_cr = mapa_cr.rename(columns={'name': 'Kraj'}) 
 except requests.exceptions.RequestException as e:
     print(f"Error fetching GeoJSON from URL: {e}")
     exit()
@@ -244,16 +244,16 @@ except Exception as e:
     print(f"An unexpected error occurred while reading GeoJSON: {e}")
     exit()
 
-# Propojíme data o maximální úmrtnosti s geografickými daty
+# data o maximální úmrtnosti s geografickými daty
 mapa_max = mapa_cr.merge(df_max_umrtnost, on='Kraj', how='left')
 
-# Vytvoříme graf pro maximální úmrtnost
+# graf pro maximální úmrtnost
 fig_max, ax_max = plt.subplots(1, 1, figsize=(10, 10))
 mapa_max.plot(linewidth=0.8, ax=ax_max, edgecolor='0.8', color='lightgray')
 ax_max.set_title('Měsíce s nejvyšší úmrtností dle krajů (2011-2024)', fontsize=26)
 ax_max.set_axis_off()
 
-# Přidáme textové anotace s názvy měsíců a názvem kraje na centroidy krajů (pro maximální úmrtnost)
+# textové anotace s názvy měsíců a názvem kraje na centroidy krajů (pro maximální úmrtnost)
 for idx, row in mapa_max.iterrows():
     centroid = row.geometry.centroid
     kraj_nazev = row['Kraj']
@@ -261,16 +261,16 @@ for idx, row in mapa_max.iterrows():
     if pd.notna(mesic):
         ax_max.annotate(f'{mesic} ({kraj_nazev})', xy=(centroid.x, centroid.y), xytext=(-25, 10), textcoords="offset points", fontsize=13, ha='left', color='red')
 
-# Propojíme data o minimální úmrtnosti s geografickými daty
+# data o minimální úmrtnosti s geografickými daty
 mapa_min = mapa_cr.merge(df_min_umrtnost, on='Kraj', how='left')
 
-# Vytvoříme graf pro minimální úmrtnost
+# graf pro minimální úmrtnost
 fig_min, ax_min = plt.subplots(1, 1, figsize=(10, 10))
 mapa_min.plot(linewidth=0.8, ax=ax_min, edgecolor='0.8', color='lightgray')
 ax_min.set_title('Měsíce s nejnižší úmrtností dle krajů (2011-2024)', fontsize=26)
 ax_min.set_axis_off()
 
-# Přidáme textové anotace s názvy měsíců a názvem kraje na centroidy krajů (pro minimální úmrtnost)
+# textové anotace s názvy měsíců a názvem kraje na centroidy krajů (pro minimální úmrtnost)
 for idx, row in mapa_min.iterrows():
     centroid = row.geometry.centroid
     kraj_nazev = row['Kraj']
