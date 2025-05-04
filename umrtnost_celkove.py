@@ -36,24 +36,7 @@ try:
         plt.xticks(rotation=45, ha='right')
         plt.tight_layout()
         plt.show()
-
-
-        '''
-        # 2. Čárový graf vývoje úmrtnosti v jednotlivých měsících v průběhu let
-        plt.figure(figsize=(14, 8))
-        for mesic in df.index:
-            # Zajistíme, že vybíráme pouze číselné sloupce pro graf
-            ciselne_sloupce = [col for col in df.columns if col != 'Průměr']
-            plt.plot(ciselne_sloupce, df.loc[mesic, ciselne_sloupce], marker='o', label=mesic)
-
-        plt.title('Vývoj měsíční úmrtnosti v ČR (dle dostupných let)')
-        plt.xlabel('Rok')
-        plt.ylabel('Počet zemřelých')
-        plt.legend(title='Měsíc', bbox_to_anchor=(1.05, 1), loc='upper left')
-        plt.grid(True)
-        plt.tight_layout()
-        plt.show()
-        '''
+        
         # 2. Čárový graf vývoje úmrtnosti v jednotlivých měsících v průběhu let
         plt.figure(figsize=(14, 8))
         palette = sns.color_palette("Paired", n_colors=12)
