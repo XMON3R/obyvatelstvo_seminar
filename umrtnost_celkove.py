@@ -85,6 +85,26 @@ try:
         plt.tight_layout()
         plt.show()
 
+
+        # 4. Čárový graf procentuálních změn celkové roční úmrtnosti
+        rocni_umrtnost = df[ciselne_sloupce].sum()
+        rocni_pct_change = rocni_umrtnost.pct_change() * 100
+
+        fig4, ax4 = plt.subplots(figsize=(10, 6))
+        ax4.plot(rocni_pct_change.index, rocni_pct_change.values, marker='o', color='skyblue')
+        ax4.set_title('Procentuální změny (meziroční) celkové roční úmrtnosti')
+        ax4.set_xlabel('Rok')
+        ax4.set_ylabel('Procentuální změna (%)')
+        ax4.grid(True, alpha=0.5)
+        ax4.axhline(0, color='black', linewidth=0.8, linestyle='--')
+
+        for rok, pct_zmena, pocet_umrti in zip(rocni_pct_change.index, rocni_pct_change.values, rocni_umrtnost.values):
+            ax4.annotate(f'{int(pocet_umrti)}', (rok, pct_zmena), textcoords="offset points", xytext=(0, 5), ha='center', fontsize='small')
+
+        plt.tight_layout()
+        plt.show()
+
+
 except FileNotFoundError:
     print(f"Chyba: Soubor '{soubor_csv}' nebyl nalezen. Zkontrolujte cestu.")
 except Exception as e:
